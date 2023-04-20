@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es"></html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=7.0">
+    <link rel="stylesheet" href="Tipografias/Font Springfield/stylesheet.css">
+    <title>>El Clima en Springfield es</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var apiKey = "e7693664dd1d700ae36e13198fd44665";
+			var url = "https://api.openweathermap.org/data/2.5/weather?";
+
+			if ("geolocation" in navigator) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var lat = position.coords.latitude;
+					var lon = position.coords.longitude;
+
+					url += "lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+
+					$.getJSON(url, function(data) {
+						var temp = Math.round(data.main.temp - 273.15); // Convertir a grados Celsius y redondear
+						var description = data.weather[0].description;
+						var icon = "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png";
+
+						$("#temp").html(temp + "°C");
+						$("#description").html(description);
+						$("#icon").attr("src", icon);
+					});
+				});
+			} else {
+				alert("Lo siento, tu navegador no admite geolocalización.");
+			}
+		});
+	</script>
+</head>
+<body>
+	<h1>El Clima en Springfield es:</h1>
+	<p id="temp"></p>
+	<p id="description"></p>
+	<img id="icon" src="" alt="Icono del clima">
+</body>
+</html>
